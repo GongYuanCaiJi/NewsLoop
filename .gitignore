@@ -1,0 +1,30 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+.venv/
+
+# Streamlit / misc caches (at any depth)
+**/.streamlit/
+SharedData/recovery/runtime-state/*
+!SharedData/recovery/runtime-state/README.md
+SharedData/recovery/restore-drills/*
+!SharedData/recovery/restore-drills/README.md
+SharedData/recovery/.runtime-backup.lock
+
+# macOS
+.DS_Store
+
+# (Optional) local versions/backup folder
+versions/
+
+# 不要提交本機設定與密碼檔（保留可公開的範例）
+**/.env
+**/.env.*
+!**/.env.example
+
+# 本地 agent runtime state
+.serena/
+.scratch/

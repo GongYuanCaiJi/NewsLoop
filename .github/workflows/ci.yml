@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: PR required checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip==26.1.2
+          python -m pip install --requirement requirements-dev.txt
+
+      - name: Audit installed dependencies
+        run: python -m pip_audit --local
+
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Test extension popup contract
+        env:
+          NEWSLOOP_TEST_PYTHON: python
+        run: node --test tests/*.test.js
+
+      - name: Compile Python sources
+        run: python -m compileall -q backend auto_grader_daemon.py scripts streamlit
+
+      - name: Check readiness and dependency license evidence
+        run: python scripts/check_open_source_readiness.py
