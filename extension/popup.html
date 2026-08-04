@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NewsLoop</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="hero">
+        <div class="brand">NewsLoop</div>
+        <div class="subtitle">10 秒內完成一則觀點紀錄</div>
+      </header>
+
+      <section class="panel">
+        <label class="field">
+          <span id="label_title">標題</span>
+          <input id="title" type="text" placeholder="新聞標題" />
+        </label>
+
+        <label class="field">
+          <span id="label_origin_url">來源網址</span>
+          <input id="origin_url" type="url" placeholder="https://" />
+        </label>
+
+        <div class="row">
+          <label class="field">
+            <span id="label_ticker">Ticker</span>
+            <input id="ticker" type="text" placeholder="BTC-USD / 2330.TW / NVDA" />
+          </label>
+          <label class="field">
+            <span id="label_sentiment">方向</span>
+            <select id="sentiment">
+              <option value="Bullish">Bullish</option>
+              <option value="Neutral">Neutral</option>
+              <option value="Bearish">Bearish</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="field">
+          <span id="label_date">日期時間 (本地時間，會轉成 UTC)</span>
+          <input id="customDate" type="datetime-local" />
+        </label>
+
+        <label class="field">
+          <span id="label_timeframe">週期</span>
+          <select id="timeframe">
+            <option value="1m">1m</option>
+            <option value="5m">5m</option>
+            <option value="15m">15m</option>
+            <option value="1h">1h</option>
+            <option value="4h">4h</option>
+            <option value="1d" selected>1d</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span id="label_track_mode">模式</span>
+          <select id="track_mode">
+            <option value="Track1" selected>軌道一（實戰）</option>
+            <option value="Track2">軌道二（盤感）</option>
+          </select>
+        </label>
+
+        <div id="track1_trade_plan_group" class="field">
+          <span id="label_trade_plan">交易計畫 (可選填)</span>
+          <div class="row">
+            <label class="field">
+              <span id="label_instrument">持有方式</span>
+              <select id="instrument">
+                <option value="">未選擇</option>
+                <option value="Spot">Spot</option>
+                <option value="Contract">Contract</option>
+                <option value="Options">Options</option>
+              </select>
+            </label>
+            <label class="field">
+              <span id="label_exposure">曝險 %</span>
+              <input id="exposure" type="number" placeholder="例如 20" />
+            </label>
+          </div>
+          <div class="row">
+            <label class="field">
+              <div class="entry-label-row">
+                <span id="label_entry">進場</span>
+                <span id="entry_mode_badge" class="entry-mode-badge market">市價</span>
+              </div>
+              <input id="entry" type="number" step="any" />
+            </label>
+            <label class="field">
+              <span id="label_tp">止盈 (TP)</span>
+              <input id="tp" type="number" step="any" />
+            </label>
+          </div>
+          <div class="row">
+            <label class="field">
+              <span id="label_sl">止損 (SL)</span>
+              <input id="sl" type="number" step="any" />
+            </label>
+            <label class="field">
+              <span id="label_rr">盈虧比 (RR)</span>
+              <input id="rr" type="number" readonly />
+            </label>
+          </div>
+        </div>
+
+        <div id="track2_plan_group" class="field hidden">
+          <span id="label_track2_plan">盤感參數</span>
+          <div class="row">
+            <label class="field">
+              <span id="label_t2_bars_limit">限制 K 棒數量</span>
+              <input id="t2_bars_limit" type="number" min="1" step="1" value="20" />
+            </label>
+            <label class="field">
+              <span id="label_t2_threshold_pct">過濾閾值 (%)</span>
+              <input id="t2_threshold_pct" type="number" min="0" step="0.01" placeholder="可空白，預設 0" />
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <span id="label_confidence">信心分數</span>
+          <div class="slider-wrap">
+            <input id="confidence" type="range" min="1" max="5" step="1" value="3" />
+            <div id="confidence_label" class="slider-label">3 / 穩健</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <span id="label_mindset">心態分數</span>
+          <div class="slider-wrap">
+            <input id="mindset" type="range" min="1" max="5" step="1" value="3" />
+            <div id="mindset_label" class="slider-label">3 / 平穩</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <span id="label_tags">智慧標籤</span>
+          <div id="tag_buttons" class="tag-buttons"></div>
+          <div class="tag-input">
+            <input id="tag_input" type="text" placeholder="新增標籤後按 Enter" />
+            <button id="tag_add" type="button">新增</button>
+          </div>
+          <div id="tag_selected" class="tag-selected"></div>
+        </div>
+
+        <label class="field">
+          <span id="label_note">備註</span>
+          <textarea id="note" rows="3" placeholder="重點、假設、觀察..." ></textarea>
+        </label>
+
+        <label class="field api-config">
+          <span>API 位址</span>
+          <div class="api-config-row">
+            <input id="api_base" type="url" placeholder="http://localhost:8000" />
+            <button id="api_base_save" class="ghost" type="button">套用</button>
+          </div>
+        </label>
+
+        <label class="field api-config">
+          <span>API Key</span>
+          <div class="api-config-row">
+            <input id="api_key" type="password" placeholder="輸入 API Key（可空白）" />
+            <button id="api_key_save" class="ghost" type="button">套用</button>
+          </div>
+          <div class="api-note">API Key 僅保留在本次瀏覽器工作階段</div>
+        </label>
+
+        <div class="actions">
+          <button id="save" class="primary" type="button">儲存</button>
+          <button id="clear" class="ghost" type="button">清空</button>
+        </div>
+
+        <div id="status" class="status"></div>
+      </section>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

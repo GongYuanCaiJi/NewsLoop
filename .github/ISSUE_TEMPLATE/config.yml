@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 安全弱點
+    url: https://github.com/GongYuanCaiJi/NewsLoop/security/policy
+    about: 請先閱讀安全政策，不要在公開 issue 揭露弱點或 credentials。

@@ -1,0 +1,11 @@
+title = "NewsLoop gitleaks config"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Chrome extension manifest public key keeps a stable development extension ID; it is not a private secret."
+targetRules = ["generic-api-key"]
+paths = ['''(^|/)extension/manifest\.json$''']
+regexTarget = "line"
+regexes = ['''^\s*"key":\s*"[A-Za-z0-9+/=]{300,}"[,]?\s*$''']
