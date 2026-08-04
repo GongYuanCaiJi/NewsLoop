@@ -1,5 +1,5 @@
 fastapi==0.139.2
-uvicorn==0.30.6
+uvicorn==0.52.0
 requests==2.33.0
 filelock==3.32.0
 python-dotenv==1.2.2
