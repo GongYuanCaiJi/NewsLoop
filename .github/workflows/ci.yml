@@ -9,6 +9,7 @@ concurrency:
   cancel-in-progress: true
 permissions:
   contents: read
+  pull-requests: read # gitleaks in the shared CI lists the PR commits
 jobs:
   ci:
     uses: GongYuanCaiJi/.github/.github/workflows/ci.yml@main
